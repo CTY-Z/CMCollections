@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CMFramework.Core
 {
-    public struct ObjectCtorData<T>
+    public struct ObjectPoolCtorData<T>
     {
         public string name;
         public int initialCapacity;
@@ -26,7 +26,7 @@ namespace CMFramework.Core
         /// <param name="OnRent">租用回调</param>
         /// <param name="OnReturn">归还回调</param>
         /// <param name="isPrepareItem">是否在创建Pool时直接预创建所有对象</param>
-        public ObjectCtorData(string name, int initialCapacity, Func<T> factory, bool allowGrow = false,
+        public ObjectPoolCtorData(string name, int initialCapacity, Func<T> factory, bool allowGrow = false,
             Action<T>? OnRent = null, Action<T>? OnReturn = null, bool isPrepareItem = false)
         {
             this.name = name;

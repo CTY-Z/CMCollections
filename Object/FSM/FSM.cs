@@ -31,7 +31,7 @@ namespace CMFramework.Core
                 throw new InvalidExpressionException($"[FSM:{name}] - FSM states is invalid");
 
             //pooled = ReferencePool.GetRef<FSM<T>>();
-            pooled = ReferencePool.GetRefByCreatePool<FSM<T>>(new ObjectCtorData<FSM<T>>("test", 10,
+            pooled = ReferencePool.GetRefByCreatePool<FSM<T>>(new ObjectPoolCtorData<FSM<T>>("test", 10,
                 () => { return new FSM<T>(); },
                 false,
                 (FSM<T> fsm) => { Debug.Log($"ªÒ»°¡À{name}fsm"); },

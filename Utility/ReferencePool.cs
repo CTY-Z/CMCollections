@@ -20,7 +20,7 @@ namespace CMFramework.Core
             return pool!.Rent();
         }
 
-        public static ObjectPool<T>.Pooled GetRefByCreatePool<T>(ObjectCtorData<T> data)// where T : class
+        public static ObjectPool<T>.Pooled GetRefByCreatePool<T>(ObjectPoolCtorData<T> data)// where T : class
         {
             ObjectPool<T> pool = GetPool<T>(data);
             return pool!.Rent();
@@ -37,7 +37,7 @@ namespace CMFramework.Core
             {
                 if (!isCreatePool) return null;
 
-                ObjectCtorData<T> data = new ObjectCtorData<T>("", 50, () => { return new T(); }, false, null
+                ObjectPoolCtorData<T> data = new ObjectPoolCtorData<T>("", 50, () => { return new T(); }, false, null
                     , null, true);
                 pool = CreatePool<T>(data);
                 dic_type_pool[typeof(T)] = pool;
@@ -45,7 +45,7 @@ namespace CMFramework.Core
             }
         }
 
-        public static ObjectPool<T> GetPool<T>(ObjectCtorData<T> data)// where T : class
+        public static ObjectPool<T> GetPool<T>(ObjectPoolCtorData<T> data)// where T : class
         {
             ObjectPoolBase pool = null;
             if (dic_type_pool.TryGetValue(typeof(T), out pool))
@@ -60,7 +60,7 @@ namespace CMFramework.Core
             }
         }
 
-        private static ObjectPool<T> CreatePool<T>(ObjectCtorData<T> data)
+        private static ObjectPool<T> CreatePool<T>(ObjectPoolCtorData<T> data)
         {
             return new ObjectPool<T>(data.name, data.initialCapacity, data.factory,
                 data.allowGrow, data.OnRent, data.OnReturn, data.isPrepareItem);

@@ -39,14 +39,14 @@ namespace CMFramework.Core
             }
             else
             {
-                ObjectCtorData<T> data = new ObjectCtorData<T>("", 50, () => { return default(T); });
+                ObjectPoolCtorData<T> data = new ObjectPoolCtorData<T>("", 50, () => { return default(T); });
                 CreatePool<T>(data);
             }
 
             return null;
         }
 
-        private ObjectPool<T> CreatePool<T>(ObjectCtorData<T> data)
+        private ObjectPool<T> CreatePool<T>(ObjectPoolCtorData<T> data)
         {
             ObjectPool<T> pool = new ObjectPool<T>(data.name, data.initialCapacity, data.factory,
                 data.allowGrow, data.OnRent, data.OnReturn, data.isPrepareItem);
