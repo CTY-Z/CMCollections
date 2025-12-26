@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace CMFramework.Core.Collections
 {
@@ -40,6 +38,7 @@ namespace CMFramework.Core.Collections
             if (list == null) return false;
             return idx < 0 || idx >= list.Count;
         }
+
     }
 }
     

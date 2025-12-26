@@ -15,22 +15,21 @@ namespace CMFramework.Core
             dic_type_pool = new();
         }
 
-        public ObjectPool<T>.Pooled GetObj<T>() where T : class
+        public T GetObj<T>() where T : class, IPoolItem
         {
             ObjectPool<T> pool = GetPool<T>();
             return pool!.Rent();
         }
 
-        public void GetObj<T>(Action<T> func) where T : class
+        public void GetObj<T>(Action<T> func) where T : class, IPoolItem
         {
             ObjectPool<T> pool = GetPool<T>();
-            using (var pooled = pool!.Rent())
-            {
-                func(pooled.value);
-            }
+            T item = pool!.Rent();
+            func(item);
+            pool.InternalReturn(item.idx);
         }
 
-        public ObjectPool<T> GetPool<T>() where T : class
+        public ObjectPool<T> GetPool<T>() where T : class, IPoolItem
         {
             ObjectPoolBase pool = null;
             if (dic_type_pool.TryGetValue(typeof(T), out pool))
@@ -46,7 +45,7 @@ namespace CMFramework.Core
             return null;
         }
 
-        private ObjectPool<T> CreatePool<T>(ObjectPoolCtorData<T> data)
+        private ObjectPool<T> CreatePool<T>(ObjectPoolCtorData<T> data)where T : IPoolItem
         {
             ObjectPool<T> pool = new ObjectPool<T>(data.name, data.initialCapacity, data.factory,
                 data.allowGrow, data.OnRent, data.OnReturn, data.isPrepareItem);

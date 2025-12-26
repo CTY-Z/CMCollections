@@ -10,7 +10,7 @@ namespace CMFramework.Core
         private FSMState<T> currentState;
         private bool isDestroy;
 
-        private static ObjectPool<FSM<T>>.Pooled pooled;
+        private static FSM<T> m_fsm;
 
         private Dictionary<Type, FSMState<T>> dic_type_state;
 
@@ -30,13 +30,12 @@ namespace CMFramework.Core
             if (list_state == null || list_state.Count < 1) 
                 throw new InvalidExpressionException($"[FSM:{name}] - FSM states is invalid");
 
-            //pooled = ReferencePool.GetRef<FSM<T>>();
-            pooled = ReferencePool.GetRefByCreatePool<FSM<T>>(new ObjectPoolCtorData<FSM<T>>("test", 10,
+            m_fsm = ReferencePool.GetRefByCreatePool<FSM<T>>(new ObjectPoolCtorData<FSM<T>>("test", 10,
                 () => { return new FSM<T>(); },
                 false,
                 (FSM<T> fsm) => { Debug.Log($"获取了{name}fsm"); },
                 (FSM<T> fsm) => { Debug.Log($"回收了{name}fsm"); }, true));
-            FSM<T> fsm = pooled.value;
+            FSM<T> fsm = m_fsm;
             fsm.fsmName = name;
             fsm.isDestroy = false;
 
@@ -117,7 +116,7 @@ namespace CMFramework.Core
         {
             currentState.OnExit();
             Reset();
-            pooled.Dispose();
+            ReferencePool.Return<FSM<T>>(m_fsm.idx);
         }
     }
 }

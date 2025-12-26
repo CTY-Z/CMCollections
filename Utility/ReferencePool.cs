@@ -11,22 +11,22 @@ namespace CMFramework.Core
 
         public static int Count { get { return dic_type_pool.Count; } }
 
-        public static ObjectPool<T>.Pooled GetRef<T>(bool isCreatePool = true) where T : new()
+        public static T GetRef<T>(bool isCreatePool = true) where T : IPoolItem, new()
         {
             ObjectPool<T> pool = GetPool<T>(isCreatePool);
 
-            if (pool == null) return default(ObjectPool<T>.Pooled);
+            if (pool == null) return default(T);
 
             return pool!.Rent();
         }
 
-        public static ObjectPool<T>.Pooled GetRefByCreatePool<T>(ObjectPoolCtorData<T> data)// where T : class
+        public static T GetRefByCreatePool<T>(ObjectPoolCtorData<T> data) where T : IPoolItem
         {
             ObjectPool<T> pool = GetPool<T>(data);
             return pool!.Rent();
         }
 
-        public static ObjectPool<T> GetPool<T>(bool isCreatePool = true) where T : new()
+        public static ObjectPool<T> GetPool<T>(bool isCreatePool = true) where T : IPoolItem, new()
         {
             ObjectPoolBase pool = null;
             if (dic_type_pool.TryGetValue(typeof(T), out pool))
@@ -45,7 +45,7 @@ namespace CMFramework.Core
             }
         }
 
-        public static ObjectPool<T> GetPool<T>(ObjectPoolCtorData<T> data)// where T : class
+        public static ObjectPool<T> GetPool<T>(ObjectPoolCtorData<T> data) where T : IPoolItem
         {
             ObjectPoolBase pool = null;
             if (dic_type_pool.TryGetValue(typeof(T), out pool))
@@ -60,11 +60,20 @@ namespace CMFramework.Core
             }
         }
 
-        private static ObjectPool<T> CreatePool<T>(ObjectPoolCtorData<T> data)
+        public static void Return<T>(int idx) where T : IPoolItem
+        {
+            ObjectPoolBase pool = null;
+            if (dic_type_pool.TryGetValue(typeof(T), out pool))
+                ((ObjectPool<T>)pool).InternalReturn(idx);
+        }
+
+        private static ObjectPool<T> CreatePool<T>(ObjectPoolCtorData<T> data) where T : IPoolItem
         {
             return new ObjectPool<T>(data.name, data.initialCapacity, data.factory,
                 data.allowGrow, data.OnRent, data.OnReturn, data.isPrepareItem);
         }
+
+
     }
 }
 

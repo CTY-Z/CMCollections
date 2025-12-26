@@ -2,7 +2,7 @@ using System;
 
 namespace CMFramework.Core
 {
-    public class ObjectPool<T> : ObjectPoolBase// where T : class
+    public class ObjectPool<T> : ObjectPoolBase where T : IPoolItem
     {
         private T[] arr_item;
         private int[] arr_next;
@@ -16,25 +16,6 @@ namespace CMFramework.Core
 #nullable enable
         private readonly Action<T>? OnRent;
         private readonly Action<T>? OnReturn;
-
-        public struct Pooled : IDisposable
-        {
-            private readonly ObjectPool<T>? pool;
-            private readonly int idx;
-            public readonly T value;
-
-            internal Pooled(ObjectPool<T> pool, int idx, T value)
-            {
-                this.pool = pool;
-                this.idx = idx;
-                this.value = value;
-            }
-
-            public void Dispose()
-            {
-                pool!.InternalReturn(idx);
-            }
-        }
 
         /// <summary>
         /// 构造一个对象池
@@ -95,7 +76,7 @@ namespace CMFramework.Core
 #endif
         }
 
-        public Pooled Rent()
+        public T Rent()
         {
             int idx = PopFree();
             if (idx == -1)
@@ -107,7 +88,8 @@ namespace CMFramework.Core
 
             var item = arr_item[idx];
             OnRent?.Invoke(item);
-            return new Pooled(this, idx, item);
+            item.idx = idx;
+            return item;
         }
 
         internal void InternalReturn(int idx)
