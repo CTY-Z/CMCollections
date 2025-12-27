@@ -9,5 +9,10 @@ namespace CMFramework.ECS
     {
         public int idx { get; set; }
     }
+
+    public class BaseSingletonComponent
+    {
+
+    }
 }
 

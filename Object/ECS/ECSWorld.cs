@@ -1,13 +1,14 @@
 using CMFramework.Core;
 using CMFramework.Core.Collections;
-using CMFramework.Gameplay;
 using System;
 using System.Collections.Generic;
-using Unity.Entities;
 using static CMFramework.ECS.ECSWorld;
 
 namespace CMFramework.ECS
 {
+    public delegate void StartUpSystem(Commands command);
+    public delegate void UpdateSystem(Commands command, Queryer queryer, SingletonHandler handler);
+
     public class ECSWorld
     {
         private Dictionary<int, ComponentInfo> dic_componentID_componentInfo = new();
@@ -21,24 +22,25 @@ namespace CMFramework.ECS
             public void RemoveEntity(int e) => set.Remove(e);
         }
 
+
         private Dictionary<int, SingletonComponentInfo> dic_componentID_singletonComponentInfo = new();
 
         public class SingletonComponentInfo
         {
-            public BaseComponent component;
-            public Action<BaseComponent> Dispose;
+            public BaseSingletonComponent component;
+            public Action<BaseSingletonComponent> Dispose;
 
-            public SingletonComponentInfo(Action<BaseComponent> Dispose)
+            public SingletonComponentInfo(Action<BaseSingletonComponent> Dispose)
             {
                 this.Dispose = Dispose;
             }
         }
 
-        public class SingletonComponent
+        public class SingletonHandler
         {
             private ECSWorld m_world;
 
-            public SingletonComponent(ECSWorld world)
+            public SingletonHandler(ECSWorld world)
             {
                 m_world = world;
             }
@@ -49,7 +51,7 @@ namespace CMFramework.ECS
                 return m_world.dic_componentID_singletonComponentInfo.TryGetValue(idx, out SingletonComponentInfo info); 
             }
 
-            public SingletonComp Get<SingletonComp>() where SingletonComp : BaseComponent
+            public SingletonComp Get<SingletonComp>() where SingletonComp : BaseSingletonComponent
             {
                 int idx = IdxGetter<SingletonID>.Get<SingletonComp>();
                 SingletonComponentInfo info = null;
@@ -131,7 +133,7 @@ namespace CMFramework.ECS
 
 
 
-            public Commands SetSingleton<SingletonComp>(Action<SingletonComp> ctor = null) where SingletonComp : BaseComponent, new()
+            public Commands SetSingleton<SingletonComp>(Action<SingletonComp> ctor = null) where SingletonComp : BaseSingletonComponent, new()
             {
                 int idx = IdxGetter<SingletonID>.Get<SingletonComp>();
 
@@ -141,7 +143,8 @@ namespace CMFramework.ECS
                     info = new SingletonComponentInfo((comp) => { comp = null; });
                     SingletonComp comp = new SingletonComp();
                     info.component = comp;
-                    ctor(comp);
+                    if (ctor != null)
+                        ctor(comp);
                     m_world.dic_componentID_singletonComponentInfo[idx] = info;
                 }
 
@@ -237,6 +240,67 @@ namespace CMFramework.ECS
                 }
                 return flag;
             }
+        }
+
+        Commands command;
+        Queryer queryer;
+        SingletonHandler singletonHandler;
+
+        StartUpSystem startUpSystem;
+        UpdateSystem updateSystem;
+        public void Init()
+        {
+            command = new Commands(this);
+            queryer = new Queryer(this);
+            singletonHandler = new SingletonHandler(this);
+        }
+
+        public ECSWorld AddStartUpSystem(StartUpSystem addStartUpSystem)
+        {
+            if (addStartUpSystem == null)
+                startUpSystem = new StartUpSystem(addStartUpSystem);
+            else
+                startUpSystem += addStartUpSystem;
+
+            return this;
+        }
+
+        public ECSWorld AddSystem(UpdateSystem addUpdateSystem)
+        {
+            if (addUpdateSystem == null)
+                updateSystem = new UpdateSystem(addUpdateSystem);
+            else
+                updateSystem += addUpdateSystem;
+
+            return this;
+        }
+
+        public ECSWorld AddSingleton<T>(Action<T> ctor = null) where T : BaseSingletonComponent, new()
+        {
+            command.SetSingleton(ctor);
+            return this;
+        }
+
+
+        public void Start()
+        {
+            startUpSystem?.Invoke(command);
+        }
+
+
+        public void Update()
+        {
+            updateSystem?.Invoke(command, queryer, singletonHandler);
+        }
+
+        public void ShutDown()
+        {
+            startUpSystem = null;
+            updateSystem = null;
+
+            dic_componentID_componentInfo.Clear();
+            dic_componentID_singletonComponentInfo.Clear();
+            dic_entity_componentContainer.Clear();
         }
 
     } 
