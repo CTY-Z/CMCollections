@@ -4,9 +4,8 @@ using UnityEngine;
 
 namespace CMFramework.Core
 {
-    public interface IPoolItem
+    public interface IObjPoolItem
     {
         int idx { get; set; }
     }
 }
-

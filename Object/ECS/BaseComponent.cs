@@ -1,11 +1,10 @@
-using CMFramework.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMFramework.ECS
+namespace CMFramework.Core.ECS
 {
-    public class BaseComponent : IPoolItem
+    public class BaseComponent : IRefPoolItem
     {
         public int idx { get; set; }
     }

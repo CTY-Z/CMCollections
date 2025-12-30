@@ -1,6 +1,6 @@
 using CMFramework.Core;
 
-public class FSMBase : IPoolItem
+public class FSMBase : IRefPoolItem
 {
     public int idx { get; set; }
     protected string fsmName;

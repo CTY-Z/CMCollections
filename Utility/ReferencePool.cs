@@ -11,7 +11,7 @@ namespace CMFramework.Core
 
         public static int Count { get { return dic_type_pool.Count; } }
 
-        public static T GetRef<T>(bool isCreatePool = true) where T : IPoolItem, new()
+        public static T GetRef<T>(bool isCreatePool = true) where T : IRefPoolItem, new()
         {
             ObjectPool<T> pool = GetPool<T>(isCreatePool);
 
@@ -20,13 +20,13 @@ namespace CMFramework.Core
             return pool!.Rent();
         }
 
-        public static T GetRefByCreatePool<T>(ObjectPoolCtorData<T> data) where T : IPoolItem
+        public static T GetRefByCreatePool<T>(ObjectPoolCtorData<T> data) where T : IRefPoolItem
         {
             ObjectPool<T> pool = GetPool<T>(data);
             return pool!.Rent();
         }
 
-        public static ObjectPool<T> GetPool<T>(bool isCreatePool = true) where T : IPoolItem, new()
+        public static ObjectPool<T> GetPool<T>(bool isCreatePool = true) where T : IRefPoolItem, new()
         {
             ObjectPoolBase pool = null;
             if (dic_type_pool.TryGetValue(typeof(T), out pool))
@@ -45,7 +45,7 @@ namespace CMFramework.Core
             }
         }
 
-        public static ObjectPool<T> GetPool<T>(ObjectPoolCtorData<T> data) where T : IPoolItem
+        public static ObjectPool<T> GetPool<T>(ObjectPoolCtorData<T> data) where T : IRefPoolItem
         {
             ObjectPoolBase pool = null;
             if (dic_type_pool.TryGetValue(typeof(T), out pool))
@@ -60,14 +60,14 @@ namespace CMFramework.Core
             }
         }
 
-        public static void Return<T>(int idx) where T : IPoolItem
+        public static void Return<T>(int idx) where T : IRefPoolItem
         {
             ObjectPoolBase pool = null;
             if (dic_type_pool.TryGetValue(typeof(T), out pool))
                 ((ObjectPool<T>)pool).InternalReturn(idx);
         }
 
-        private static ObjectPool<T> CreatePool<T>(ObjectPoolCtorData<T> data) where T : IPoolItem
+        private static ObjectPool<T> CreatePool<T>(ObjectPoolCtorData<T> data) where T : IRefPoolItem
         {
             return new ObjectPool<T>(data.name, data.initialCapacity, data.factory,
                 data.allowGrow, data.OnRent, data.OnReturn, data.isPrepareItem);

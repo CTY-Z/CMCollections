@@ -2,7 +2,7 @@ using System;
 
 namespace CMFramework.Core
 {
-    public class ObjectPool<T> : ObjectPoolBase where T : IPoolItem
+    public class ObjectPool<T> : ObjectPoolBase where T : IRefPoolItem
     {
         private T[] arr_item;
         private int[] arr_next;
