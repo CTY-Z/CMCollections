@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-namespace CMFramework.ECS
+namespace CMFramework.Core.ECS
 {
     public struct ComponentID { }
     public struct SingletonID { }

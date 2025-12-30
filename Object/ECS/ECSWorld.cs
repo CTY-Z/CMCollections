@@ -2,9 +2,9 @@ using CMFramework.Core;
 using CMFramework.Core.Collections;
 using System;
 using System.Collections.Generic;
-using static CMFramework.ECS.ECSWorld;
+using static CMFramework.Core.ECS.ECSWorld;
 
-namespace CMFramework.ECS
+namespace CMFramework.Core.ECS
 {
     public delegate void StartUpSystem(Commands command);
     public delegate void UpdateSystem(Commands command, Queryer queryer, SingletonHandler handler);
@@ -242,13 +242,15 @@ namespace CMFramework.ECS
             }
         }
 
+
         Commands command;
         Queryer queryer;
         SingletonHandler singletonHandler;
 
         StartUpSystem startUpSystem;
         UpdateSystem updateSystem;
-        public void Init()
+
+        public ECSWorld()
         {
             command = new Commands(this);
             queryer = new Queryer(this);
