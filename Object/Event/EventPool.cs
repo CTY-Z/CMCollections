@@ -1,4 +1,3 @@
-using CMFramework.Gameplay;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -6,7 +5,6 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace CMFramework.Core.EventPool
 {
