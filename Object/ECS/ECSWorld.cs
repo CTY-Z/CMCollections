@@ -112,7 +112,8 @@ namespace CMFramework.Core.ECS
 
                 Component item = ReferencePool.GetRef<Component>();
                 dic_idx_component[idx] = item;
-                ctor(item);
+                if (ctor != null)
+                    ctor(item);
             }
 
             public Commands Remove(int entity)
