@@ -1,6 +1,6 @@
 using System;
 
-namespace CMFramework.Core
+namespace CM.Core
 {
     public class ObjectPool<T> : ObjectPoolBase where T : IRefPoolItem
     {
@@ -101,7 +101,7 @@ namespace CMFramework.Core
             {
                 if (idx == t_idx)
                 {
-                    DebugUtility.Error("[ObjectPool.InternalReturn] - Double return detected in ObjectPool!");
+                    DebugUtil.Error("[ObjectPool.InternalReturn] - Double return detected in ObjectPool!");
                     break;
                 }
                 t_idx = arr_next[t_idx];

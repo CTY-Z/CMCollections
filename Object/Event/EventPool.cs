@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace CMFramework.Core.EventPool
+namespace CM.Core.EventPool
 {
     public class EventPool<T> where T : BaseEventArgs
     {

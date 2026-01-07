@@ -1,10 +1,10 @@
-using CMFramework.Core;
+using CM.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMFramework.Core
+namespace CM.Core
 {
     public class CMNameEntry
     {
@@ -21,7 +21,7 @@ namespace CMFramework.Core
 
             int newHash = GetStrHashOrdinalIgnore(name);
             if (dic_hashID_str.TryGetValue(newHash, out string str) && str != name)
-                DebugUtility.Error($"FName Hash collision detected between '{name}' and '{str}'. Hash: {newHash}");
+                DebugUtil.Error($"FName Hash collision detected between '{name}' and '{str}'. Hash: {newHash}");
 
             dic_hashID_str[newHash] = name;
             dic_str_hashID[name] = newHash;

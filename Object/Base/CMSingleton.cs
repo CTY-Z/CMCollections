@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMFramework.Core
+namespace CM.Core
 {
     public class CMSingleton<T> : MonoBehaviour where T : Component
     {

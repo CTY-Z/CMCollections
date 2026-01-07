@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace CMFramework.Core.Collections
+namespace CM.Core.Collections
 {
     public class SparseSet : IEnumerable<int>
     {
@@ -51,7 +51,7 @@ namespace CMFramework.Core.Collections
         public bool Contain(int t)
         {
             if (t < 0)
-                DebugUtility.Error("[SparseSet.Contain] param t less then 0");
+                DebugUtil.Error("[SparseSet.Contain] param t less then 0");
 
             int p = Page(t);
             int o = Offset(t);

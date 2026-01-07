@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMFramework.Core
+namespace CM.Core
 {
     public static class ReferencePool
     {
@@ -30,9 +30,7 @@ namespace CMFramework.Core
         {
             ObjectPoolBase pool = null;
             if (dic_type_pool.TryGetValue(typeof(T), out pool))
-            {
                 return (ObjectPool<T>)pool;
-            }
             else
             {
                 if (!isCreatePool) return null;

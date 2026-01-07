@@ -1,10 +1,10 @@
-using CMFramework.Core;
+using CM.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMFramework.Core
+namespace CM.Core
 {
     public struct CMName : IEquatable<CMName>, IComparable<CMName>
     {

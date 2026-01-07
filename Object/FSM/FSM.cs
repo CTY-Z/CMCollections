@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 
-namespace CMFramework.Core
+namespace CM.Core
 {
     public class FSM<T> : FSMBase where T : class
     {

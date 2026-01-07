@@ -1,4 +1,4 @@
-using CMFramework.Core;
+using CM.Core;
 
 public class FSMBase : IRefPoolItem
 {

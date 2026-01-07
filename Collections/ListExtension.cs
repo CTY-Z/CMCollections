@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace CMFramework.Core.Collections
+namespace CM.Core.Collections
 {
     public static class ListExtension
     {

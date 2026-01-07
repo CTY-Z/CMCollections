@@ -1,10 +1,10 @@
-using CMFramework.Core;
-using CMFramework.Core.Collections;
+using CM.Core;
+using CM.Core.Collections;
 using System;
 using System.Collections.Generic;
-using static CMFramework.Core.ECS.ECSWorld;
+using static CM.Core.ECS.ECSWorld;
 
-namespace CMFramework.Core.ECS
+namespace CM.Core.ECS
 {
     public delegate void StartUpSystem(Commands command);
     public delegate void UpdateSystem(Commands command, Queryer queryer, SingletonHandler handler);

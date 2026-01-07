@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
-namespace CMFramework.Core
+namespace CM.Core
 {
-    public static class DebugUtility
+    public static class DebugUtil
     {
         [Conditional("UNITY_EDITOR")]
         public static void Log(object message)
